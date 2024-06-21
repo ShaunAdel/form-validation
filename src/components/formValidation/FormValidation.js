@@ -42,16 +42,12 @@ const FormValidation = () => {
     //After validation find the first error field on focus it
     useEffect(() => {
         if (isSubmitted) {
-            const firstError = Object.keys(errors)[0];
-            console.log('errors: ', errors);
-            console.log('firsterror:', firstError);
-            if (firstError) {
-                const errorElement = document.querySelector(
-                    `[aria-describedby="${firstError}-error"]`
-                );
-                if (errorElement) {
-                    errorElement.focus();
-                }
+            const firstErrorField = document.querySelector(
+                '[aria-invalid="true"]'
+            );
+            console.log(firstErrorField);
+            if (firstErrorField) {
+                firstErrorField.focus();
             }
         }
     }, [errors]);
