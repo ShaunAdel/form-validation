@@ -10,6 +10,7 @@ const FormValidation = () => {
         tigerType: '',
     });
     const [errors, setErrors] = useState({});
+    const [isSubmitted, setIsSubmitted] = useState(false);
 
     const ERROR_MESSAGES = {
         EMAIL: 'Email is not valid',
@@ -40,15 +41,17 @@ const FormValidation = () => {
 
     //After validation find the first error field on focus it
     useEffect(() => {
-        const firstError = Object.keys(errors)[0];
-        console.log('errors: ', errors);
-        console.log('firsterror:', firstError);
-        if (firstError) {
-            const errorElement = document.querySelector(
-                `[aria-describedby="${firstError}-error"]`
-            );
-            if (errorElement) {
-                errorElement.focus();
+        if (isSubmitted) {
+            const firstError = Object.keys(errors)[0];
+            console.log('errors: ', errors);
+            console.log('firsterror:', firstError);
+            if (firstError) {
+                const errorElement = document.querySelector(
+                    `[aria-describedby="${firstError}-error"]`
+                );
+                if (errorElement) {
+                    errorElement.focus();
+                }
             }
         }
     }, [errors]);
@@ -71,6 +74,7 @@ const FormValidation = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        setIsSubmitted(true);
         let isValid = validate();
         if (isValid) {
             console.log('Form submitted successfully', form);
