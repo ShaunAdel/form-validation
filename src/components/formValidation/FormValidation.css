@@ -103,3 +103,8 @@ fieldset + fieldset {
     font-size: 0.7em;
     margin-left: 20px;
 }
+
+input:focus,
+input[type='password']:focus {
+    outline: 2px solid blue;
+}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './FormValidation.css';
 
 const FormValidation = () => {
@@ -38,6 +38,21 @@ const FormValidation = () => {
         return Object.keys(tempErrors).length === 0;
     };
 
+    //After validation find the first error field on focus it
+    useEffect(() => {
+        const firstError = Object.keys(errors)[0];
+        console.log('errors: ', errors);
+        console.log('firsterror:', firstError);
+        if (firstError) {
+            const errorElement = document.querySelector(
+                `[aria-describedby="${firstError}-error"]`
+            );
+            if (errorElement) {
+                errorElement.focus();
+            }
+        }
+    }, [errors]);
+
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
         if (type === 'checkbox') {
@@ -64,23 +79,29 @@ const FormValidation = () => {
 
     return (
         <>
-            <form method='post' action='' onSubmit={handleSubmit}>
+            <form method='post' action='' onSubmit={handleSubmit} noValidate>
                 <h1>Fill out this awesome form</h1>
                 <fieldset>
-                    <h3>Your details</h3>
+                    <legend>Your details</legend>
                     <p className={errors.email ? 'error' : ''}>
                         <label className='label' htmlFor='email'>
                             Email
                         </label>
                         <input
-                            type='text'
+                            type='email'
                             name='email'
                             id='email'
                             value={form.email}
                             onChange={handleChange}
+                            aria-describedby={
+                                errors.email ? 'email-error' : null
+                            }
+                            aria-invalid={errors.email ? 'true' : 'false'}
                         />
                         {errors.email && (
-                            <span className='errorMessage'>{errors.email}</span>
+                            <span id='email-error' className='errorMessage'>
+                                {errors.email}
+                            </span>
                         )}
                     </p>
                     <p className={errors.password ? 'error' : ''}>
@@ -93,9 +114,13 @@ const FormValidation = () => {
                             id='password'
                             value={form.password}
                             onChange={handleChange}
+                            aria-describedby={
+                                errors.password ? 'password-error' : null
+                            }
+                            aria-invalid={errors.password ? 'true' : 'false'}
                         />
                         {errors.password && (
-                            <span className='errorMessage'>
+                            <span id='password-error' className='errorMessage'>
                                 {errors.password}
                             </span>
                         )}
@@ -103,7 +128,7 @@ const FormValidation = () => {
                 </fieldset>
 
                 <fieldset>
-                    <h3>Your animal</h3>
+                    <legend>Your animal</legend>
                     <p className={errors.colour ? 'error' : ''}>
                         <label className='label' htmlFor='colour'>
                             Colour
@@ -113,6 +138,10 @@ const FormValidation = () => {
                             id='colour'
                             value={form.colour}
                             onChange={handleChange}
+                            aria-describedby={
+                                errors.colour ? 'colour-error' : null
+                            }
+                            aria-invalid={errors.colour ? 'true' : 'false'}
                         >
                             <option value=''>Choose colour</option>
                             <option value='blue'>Blue</option>
@@ -122,7 +151,7 @@ const FormValidation = () => {
                             <option value='brown'>Brown</option>
                         </select>
                         {errors.colour && (
-                            <span className='errorMessage'>
+                            <span id='colour-error' className='errorMessage'>
                                 {errors.colour}
                             </span>
                         )}
@@ -152,6 +181,7 @@ const FormValidation = () => {
                             type='checkbox'
                             name='animal'
                             value='snake'
+                            id='snake'
                             onChange={handleChange}
                         />
                         <label htmlFor='snake'>Snake</label>
@@ -160,12 +190,13 @@ const FormValidation = () => {
                             type='checkbox'
                             name='animal'
                             value='donkey'
+                            id='donkey'
                             onChange={handleChange}
                         />
-                        <label>Donkey</label>
+                        <label htmlFor='donkey'>Donkey</label>
 
                         {errors.animals && (
-                            <span className='errorMessage'>
+                            <span id='animals-error' className='errorMessage'>
                                 {errors.animals}
                             </span>
                         )}
@@ -179,11 +210,20 @@ const FormValidation = () => {
                                 type='text'
                                 name='tigerType'
                                 id='tiger_type'
-                                value={form.type}
+                                value={form.tigerType}
                                 onChange={handleChange}
+                                aria-describedby={
+                                    errors.tigerType ? 'tigerType-error' : null
+                                }
+                                aria-invalid={
+                                    errors.tigerType ? 'true' : 'false'
+                                }
                             />
                             {errors.tigerType && (
-                                <span className='errorMessage'>
+                                <span
+                                    id='tigerType-error'
+                                    className='errorMessage'
+                                >
                                     {errors.tigerType}
                                 </span>
                             )}
