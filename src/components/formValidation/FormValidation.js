@@ -22,7 +22,7 @@ const FormValidation = () => {
 
     const validate = () => {
         let tempErrors = {};
-        const emailRegex = /\S+@\S+\.\S+/;
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(form.email))
             tempErrors.email = ERROR_MESSAGES.EMAIL;
         if (form.password.length < 8)
@@ -50,7 +50,7 @@ const FormValidation = () => {
                 firstErrorField.focus();
             }
         }
-    }, [errors]);
+    }, [errors, isSubmitted]);
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
